@@ -97,7 +97,7 @@ class TemperatureHumiditySensor:
 
 def main():
     # 配置参数 - 请根据您的实际硬件调整这些值
-    SERIAL_PORT = '/dev/ttyUSB0'  # 串口设备路径
+    SERIAL_PORT = '/dev/ttyS1'  # 串口设备路径
     SLAVE_ADDRESS = 1  # 从站地址
     BAUD_RATE = 9600  # 波特率
     POLL_INTERVAL = 5  # 采集间隔(秒)
