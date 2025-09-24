@@ -6,8 +6,10 @@ After=network.target
 Type=simple
 User=admin
 ExecStart=/home/admin/test/caiji.py
+WorkingDirectory=/home/admin/test
 Restart=always
 RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
+
