@@ -5,7 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=admin
-ExecStart=/home/admin/test/caiji.py
+Group=admin
+ExecStart=/usr/bin/python3 /home/admin/test/caiji.py
 WorkingDirectory=/home/admin/test
 Restart=always
 RestartSec=5
