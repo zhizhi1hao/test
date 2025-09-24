@@ -4,20 +4,7 @@
 import serial
 import minimalmodbus
 import time
-import logging
 from datetime import datetime
-# nihao
-
-# # 配置日志
-# logging.basicConfig(
-#     level=logging.INFO,
-#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-#     handlers=[
-#         logging.FileHandler("sensor.log"),
-#         logging.StreamHandler()
-#     ]
-# )
-# logger = logging.getLogger("TempHumiditySensor")
 
 
 class TemperatureHumiditySensor:
@@ -52,10 +39,9 @@ class TemperatureHumiditySensor:
             self.instrument.serial.bytesize = bytesize
             self.instrument.serial.timeout = timeout
             self.instrument.mode = minimalmodbus.MODE_RTU
-
-            logger.info(f"成功初始化Modbus RTU传感器在端口 {port}")
+            print(f"成功初始化Modbus RTU传感器在端口 {port}")
         except Exception as e:
-            logger.error(f"初始化传感器失败: {e}")
+            print(f"初始化传感器失败: {e}")
             raise
 
     def read_temperature_humidity(self, temperature_register=0, humidity_register=1):
@@ -85,14 +71,14 @@ class TemperatureHumiditySensor:
             }
 
         except Exception as e:
-            logger.error(f"读取传感器数据失败: {e}")
+            print(f"读取传感器数据失败: {e}")
             return None
 
     def close(self):
         """关闭串口连接"""
         if hasattr(self, 'instrument') and self.instrument.serial.is_open:
             self.instrument.serial.close()
-            logger.info("串口连接已关闭")
+            print("串口连接已关闭")
 
 
 def main():
@@ -110,7 +96,7 @@ def main():
             baudrate=BAUD_RATE
         )
     except Exception as e:
-        logger.error(f"无法初始化传感器: {e}")
+        print(f"无法初始化传感器: {e}")
         return
 
         # 使用运行标志控制循环
@@ -119,7 +105,7 @@ def main():
 
     def signal_handler(signum, frame):
         nonlocal running
-        logger.info("接收到停止信号，正在关闭...")
+        print("接收到停止信号，正在关闭...")
         running = False
         # 注册信号处理
 
@@ -132,10 +118,10 @@ def main():
             data = sensor.read_temperature_humidity()
 
             if data:
-                logger.info(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%")
+                print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%")
                 reading_count += 1
             else:
-                logger.warning("未能读取到有效数据")
+                print("未能读取到有效数据")
 
             # 使用更优雅的等待方式
             for _ in range(POLL_INTERVAL * 10):
@@ -144,10 +130,10 @@ def main():
                 time.sleep(0.1)
 
     except Exception as e:
-        logger.error(f"程序运行出错: {e}")
+        print(f"程序运行出错: {e}")
     finally:
         sensor.close()
-        logger.info("传感器采集程序已正常退出")
+        print("传感器采集程序已正常退出")
 
 
 if __name__ == "__main__":
