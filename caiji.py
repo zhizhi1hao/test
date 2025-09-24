@@ -57,12 +57,12 @@ class TemperatureHumiditySensor:
         """
         try:
             # 读取温度 (通常寄存器中存储的值需要除以10或100得到实际值)
-            temperature_raw = self.instrument.read_register(temperature_register, 40003)
-            temperature = temperature_raw / 10.0  # 根据传感器手册调整除数
+            temperature_raw = self.instrument.read_register(40003, 1)
+            temperature = temperature_raw / 1000.0  # 根据传感器手册调整除数
 
             # 读取湿度
-            humidity_raw = self.instrument.read_register(humidity_register, 4000)
-            humidity = humidity_raw / 10.0  # 根据传感器手册调整除数
+            humidity_raw = self.instrument.read_register(4000, 1)
+            humidity = humidity_raw / 1000.0  # 根据传感器手册调整除数
 
             return {
                 'temperature': temperature,
