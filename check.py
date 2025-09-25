@@ -23,7 +23,8 @@ class GitHubAutoUpdater:
         self.retry_delay = config.get('retry_delay', 10)
 
         # 设置日志
-        self.setup_logging(config.get('log_file', r'C:\Users\ww\PycharmProjects\test\github_poller.log'))
+        # self.setup_logging(config.get('log_file', r'C:\Users\ww\PycharmProjects\test\github_poller.log'))
+        self.setup_logging(config.get('log_file', '/home/admin/test/github_poller.log'))
 
         # 初始化状态
         self.last_commit = self.get_local_commit()
@@ -361,10 +362,11 @@ def load_config(config_file=None):
         'owner': 'zhizhi1hao',
         'repo': 'test',
         'branch': 'main',
-        'project_path': r'C:\Users\ww\PycharmProjects\test',
+        # 'project_path': r'C:\Users\ww\PycharmProjects\test',
+        'project_path': '/home/admin/test',
         'poll_interval': 300,
         'github_token': os.getenv('GITHUB_TOKEN'),
-        'log_file': r'C:\Users\ww\PycharmProjects\test\github_poller.log'
+        'log_file': '/home/admin/test/github_poller.log'
     }
 
     if config_file and os.path.exists(config_file):
