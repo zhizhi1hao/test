@@ -230,7 +230,7 @@ class GitHubAutoUpdater:
 
     def restart_application(self):
         """重启应用服务"""
-        services = ['your-app-service', 'nginx', 'gunicorn']
+        services = ['myservice', 'nginx', 'gunicorn']
 
         for service in services:
             try:
