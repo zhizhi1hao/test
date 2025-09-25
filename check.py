@@ -17,7 +17,7 @@ class GitHubAutoUpdater:
         self.repo = config['repo']
         self.branch = config.get('branch', 'main')
         self.project_path = config['project_path']
-        self.poll_interval = config.get('poll_interval', 300)  # 默认5分钟
+        self.poll_interval = config.get('poll_interval', 60)  # 默认5分钟
         self.github_token = config.get('github_token')
         self.max_retries = config.get('max_retries', 3)
         self.retry_delay = config.get('retry_delay', 10)
