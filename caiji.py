@@ -64,9 +64,14 @@ class TemperatureHumiditySensor:
             humidity_raw = self.instrument.read_register(4000, 1)
             humidity = humidity_raw / 1000.0  # 根据传感器手册调整除数
 
+            # 读取湿度
+            humidity_fire = self.instrument.read_register(2, 1)
+            fire = humidity_fire # 根据传感器手册调整除数
+
             return {
                 'temperature': temperature,
                 'humidity': humidity,
+                'fire': fire,
                 'timestamp': datetime.now().isoformat()
             }
 
@@ -84,7 +89,7 @@ class TemperatureHumiditySensor:
 def main():
     # 配置参数 - 请根据您的实际硬件调整这些值
     SERIAL_PORT = '/dev/ttyS1'  # 串口设备路径
-    SLAVE_ADDRESS = 1  # 从站地址
+    SLAVE_ADDRESS = 3  # 从站地址
     BAUD_RATE = 9600  # 波特率
     POLL_INTERVAL = 5  # 采集间隔(秒)
 
@@ -101,7 +106,6 @@ def main():
 
         # 使用运行标志控制循环
     running = True
-    reading_count = 0
 
     def signal_handler(signum, frame):
         nonlocal running
@@ -118,8 +122,7 @@ def main():
             data = sensor.read_temperature_humidity()
 
             if data:
-                print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%")
-                reading_count += 1
+                print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%, 火焰: {data['fire']:.1f}")
             else:
                 print("未能读取到有效数据")
 
