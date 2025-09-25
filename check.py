@@ -17,13 +17,13 @@ class GitHubAutoUpdater:
         self.repo = config['repo']
         self.branch = config.get('branch', 'main')
         self.project_path = config['project_path']
-        self.poll_interval = config.get('poll_interval', 60)  # 默认5分钟
+        self.poll_interval = config.get('poll_interval', 300)  # 默认5分钟
         self.github_token = config.get('github_token')
         self.max_retries = config.get('max_retries', 3)
         self.retry_delay = config.get('retry_delay', 10)
 
         # 设置日志
-        self.setup_logging(config.get('log_file', '/home/admin/test/github_poller.log'))
+        self.setup_logging(config.get('log_file', r'C:\Users\ww\PycharmProjects\test\github_poller.log'))
 
         # 初始化状态
         self.last_commit = self.get_local_commit()
@@ -79,7 +79,7 @@ class GitHubAutoUpdater:
             if response.status_code == 200:
                 data = response.json()
                 commit = data['commit']
-                self.logger.error(f"获取远程成功： {commit['sha']}")
+                self.logger.info(f"获取远程成功： {str(commit)}")
                 return {
                     'sha': commit['sha'],
                     'message': commit['commit']['message'],
@@ -258,7 +258,7 @@ class GitHubAutoUpdater:
         """创建备份"""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            backup_dir = f"/backup/{self.repo}_{timestamp}"
+            backup_dir = f"/home/admin/text/{self.repo}_{timestamp}"
 
             self.logger.info(f"创建备份: {backup_dir}")
             subprocess.run(
@@ -361,10 +361,10 @@ def load_config(config_file=None):
         'owner': 'zhizhi1hao',
         'repo': 'test',
         'branch': 'main',
-        'project_path': '/home/admin/test',
+        'project_path': r'C:\Users\ww\PycharmProjects\test',
         'poll_interval': 300,
         'github_token': os.getenv('GITHUB_TOKEN'),
-        'log_file': '/home/admin/test/github_poller.log'
+        'log_file': r'C:\Users\ww\PycharmProjects\test\github_poller.log'
     }
 
     if config_file and os.path.exists(config_file):
