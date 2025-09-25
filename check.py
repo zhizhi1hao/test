@@ -336,7 +336,8 @@ Commit: {commit_info['sha'][:8]}
 
                         if not success:
                             self.logger.error("更新失败，将在下次检查时重试")
-
+                    else:
+                        self.logger.info("GitHub没有更新的版本")
                     # 等待下一次检查
                     time.sleep(self.poll_interval)
 
