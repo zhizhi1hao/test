@@ -120,7 +120,7 @@ def main():
     try:
         while running:
             data = sensor.read_temperature_humidity()
-
+            print("你好啊 我是更新来的数据")
             if data:
                 print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%, 火焰: {data['fire']:.1f}")
             else:
