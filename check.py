@@ -71,7 +71,7 @@ class GitHubAutoUpdater:
 
     def get_remote_commit_info(self):
         """获取远程仓库最新commit信息"""
-        url = f"https://20.205.243.168/repos/{self.owner}/{self.repo}/branches/{self.branch}"
+        url = f"https://api.github.com/repos/{self.owner}/{self.repo}/branches/{self.branch}"
 
         try:
             response = requests.get(url, headers=self.get_headers(), timeout=10)
@@ -79,6 +79,7 @@ class GitHubAutoUpdater:
             if response.status_code == 200:
                 data = response.json()
                 commit = data['commit']
+                self.logger.error(f"获取远程成功： {commit['sha']}")
                 return {
                     'sha': commit['sha'],
                     'message': commit['commit']['message'],
