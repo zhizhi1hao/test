@@ -71,7 +71,7 @@ class GitHubAutoUpdater:
 
     def get_remote_commit_info(self):
         """获取远程仓库最新commit信息"""
-        url = f"https://api.github.com/repos/{self.owner}/{self.repo}/branches/{self.branch}"
+        url = f"https://20.205.243.168/repos/{self.owner}/{self.repo}/branches/{self.branch}"
 
         try:
             response = requests.get(url, headers=self.get_headers(), timeout=10)
