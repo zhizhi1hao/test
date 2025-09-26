@@ -22,7 +22,7 @@ class GitHubAutoUpdater:
         self.max_retries = config.get('max_retries', 3)
         self.retry_delay = config.get('retry_delay', 10)
         self.check_service = config['check_service']
-
+        self.beifen_path = config['beifen_path']
         # 设置日志
         self.setup_logging(config['log_file'])
 
@@ -259,7 +259,7 @@ class GitHubAutoUpdater:
         """创建备份"""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            backup_dir = f"/{self.repo}_{timestamp}"
+            backup_dir = f"/{self.beifen_path}/_{timestamp}"
             self.logger.info(f"创建备份: {backup_dir}")
             os.makedirs(backup_dir, exist_ok=True)
             subprocess.run(
@@ -367,7 +367,8 @@ def load_config(config_file=None):
         'poll_interval': 1200,
         'github_token': os.getenv('GITHUB_TOKEN'),
         'check_service': 'myservice',
-        'log_file': '/home/admin/test/github_poller.log'
+        'log_file': '/home/admin/test/github_poller.log',
+        'beifen_path': '/home/admin/beifen'
     }
 
     if config_file and os.path.exists(config_file):
