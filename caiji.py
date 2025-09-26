@@ -123,7 +123,7 @@ def main():
             data = sensor.read_temperature_humidity()
             print(numpy.version)
             numpy.array([1, 2, 3])
-            print("你好啊 天气好热22222")
+            print("你好啊 天气好热22sdaaaaaaaaaaa222")
             if data:
                 print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%, 火焰: {data['fire']:.1f}")
             else:
