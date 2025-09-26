@@ -21,10 +21,10 @@ class GitHubAutoUpdater:
         self.github_token = config.get('github_token')
         self.max_retries = config.get('max_retries', 3)
         self.retry_delay = config.get('retry_delay', 10)
-        self.check_service = config.get['check_service']
+        self.check_service = config['check_service']
 
         # 设置日志
-        self.setup_logging(config.get['log_file'])
+        self.setup_logging(config['log_file'])
 
         # 初始化状态
         self.last_commit = self.get_local_commit()
