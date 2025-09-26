@@ -17,14 +17,14 @@ class GitHubAutoUpdater:
         self.repo = config['repo']
         self.branch = config.get('branch', 'main')
         self.project_path = config['project_path']
-        self.poll_interval = config.get('poll_interval', 300)  # 默认5分钟
+        self.poll_interval = config.get('poll_interval', 1200)  # 默认5分钟
         self.github_token = config.get('github_token')
         self.max_retries = config.get('max_retries', 3)
         self.retry_delay = config.get('retry_delay', 10)
+        self.check_service = config.get['check_service']
 
         # 设置日志
-        # self.setup_logging(config.get('log_file', r'C:\Users\ww\PycharmProjects\test\github_poller.log'))
-        self.setup_logging(config.get('log_file', '/home/admin/test/github_poller.log'))
+        self.setup_logging(config.get['log_file'])
 
         # 初始化状态
         self.last_commit = self.get_local_commit()
@@ -80,7 +80,7 @@ class GitHubAutoUpdater:
             if response.status_code == 200:
                 data = response.json()
                 commit = data['commit']
-                self.logger.info(f"获取远程成功： {str(commit)}")
+                self.logger.info(f"获取远程成功")
                 return {
                     'sha': commit['sha'],
                     'message': commit['commit']['message'],
@@ -232,7 +232,7 @@ class GitHubAutoUpdater:
 
     def restart_application(self):
         """重启应用服务"""
-        services = ['myservice', 'nginx', 'gunicorn']
+        services = [self.check_service]
 
         for service in services:
             try:
@@ -259,9 +259,9 @@ class GitHubAutoUpdater:
         """创建备份"""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            backup_dir = f"/home/admin/text/{self.repo}_{timestamp}"
-
+            backup_dir = f"{self.project_path}/{self.repo}_{timestamp}"
             self.logger.info(f"创建备份: {backup_dir}")
+            os.makedirs(backup_dir, exist_ok=True)
             subprocess.run(
                 ['cp', '-r', self.project_path, backup_dir],
                 check=True
@@ -290,7 +290,7 @@ class GitHubAutoUpdater:
             return False
 
         # 4. 运行自定义脚本
-        self.run_custom_scripts()
+        # self.run_custom_scripts()
 
         # 5. 重启应用
         self.restart_application()
@@ -364,8 +364,9 @@ def load_config(config_file=None):
         'branch': 'main',
         # 'project_path': r'C:\Users\ww\PycharmProjects\test',
         'project_path': '/home/admin/test',
-        'poll_interval': 300,
+        'poll_interval': 1200,
         'github_token': os.getenv('GITHUB_TOKEN'),
+        'check_service': 'myservice',
         'log_file': '/home/admin/test/github_poller.log'
     }
 
