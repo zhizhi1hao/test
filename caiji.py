@@ -5,7 +5,6 @@ import serial
 import minimalmodbus
 import time
 from datetime import datetime
-import numpy
 
 
 class TemperatureHumiditySensor:
@@ -62,16 +61,21 @@ class TemperatureHumiditySensor:
             temperature = temperature_raw / 1000.0  # 根据传感器手册调整除数
 
             # 读取湿度
-            humidity_raw = self.instrument.read_register(4000, 1)
+            humidity_raw = self.instrument.read_register(40008, 1)
             humidity = humidity_raw / 1000.0  # 根据传感器手册调整除数
 
-            # 读取湿度
+            # 读取气体
+            humidity_gas = self.instrument.read_register(40003, 1)
+            gas = humidity_gas / 1000.0 # 根据传感器手册调整除数
+
+            # 读取火焰
             humidity_fire = self.instrument.read_register(2, 1)
             fire = humidity_fire # 根据传感器手册调整除数
 
             return {
                 'temperature': temperature,
                 'humidity': humidity,
+                'gas': gas,
                 'fire': fire,
                 'timestamp': datetime.now().isoformat()
             }
@@ -90,7 +94,7 @@ class TemperatureHumiditySensor:
 def main():
     # 配置参数 - 请根据您的实际硬件调整这些值
     SERIAL_PORT = '/dev/ttyS1'  # 串口设备路径
-    SLAVE_ADDRESS = 3  # 从站地址
+    SLAVE_ADDRESS = 1  # 从站地址
     BAUD_RATE = 9600  # 波特率
     POLL_INTERVAL = 5  # 采集间隔(秒)
 
@@ -121,11 +125,9 @@ def main():
     try:
         while running:
             data = sensor.read_temperature_humidity()
-            print(numpy.version)
-            numpy.array([1, 2, 3])
-            print("你好啊 天气好热22sdaaaaaaaaaaa222")
+            print("你好啊 -------")
             if data:
-                print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%, 火焰: {data['fire']:.1f}")
+                print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%, 气体: {data['gas']:.1f}%, 火焰: {data['fire']:.1f}")
             else:
                 print("未能读取到有效数据")
 
