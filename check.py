@@ -259,7 +259,7 @@ class GitHubAutoUpdater:
         """创建备份"""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            backup_dir = f"{self.project_path}/{self.repo}_{timestamp}"
+            backup_dir = f"/{self.repo}_{timestamp}"
             self.logger.info(f"创建备份: {backup_dir}")
             os.makedirs(backup_dir, exist_ok=True)
             subprocess.run(
