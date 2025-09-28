@@ -66,11 +66,11 @@ class TemperatureHumiditySensor:
 
             # 读取气体
             humidity_gas = self.instrument.read_register(40003, 1)
-            gas = humidity_gas / 100.0 # 根据传感器手册调整除数
+            gas = humidity_gas / 100.0  # 根据传感器手册调整除数
 
             # 读取火焰
             humidity_fire = self.instrument.read_register(2, 1)
-            fire = humidity_fire # 根据传感器手册调整除数
+            fire = humidity_fire  # 根据传感器手册调整除数
 
             return {
                 'temperature': temperature,
@@ -94,8 +94,8 @@ class TemperatureHumiditySensor:
 def main():
     # 配置参数 - 请根据您的实际硬件调整这些值
     # SERIAL_PORT = '/dev/ttyS1'  # 串口设备路径
-    # SERIAL_PORT = '/dev/COM'  # 串口设备路径
-    SERIAL_PORT = '/dev/ttyUSB0'
+    SERIAL_PORT = '/COM6'  # 串口设备路径
+    # SERIAL_PORT = '/dev/ttyUSB0'
 
     SLAVE_ADDRESS = 1  # 从站地址
     BAUD_RATE = 9600  # 波特率
@@ -131,9 +131,11 @@ def main():
             time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
             print(time_str)
             if data:
-                print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%, 气体: {data['gas']:.1f}%, 火焰: {data['fire']:.1f}")
+                print(
+                    f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%, 气体: {data['gas']:.1f}%, 火焰: {data['fire']:.1f}")
             else:
                 print("未能读取到有效数据")
+                running = False
 
             # 使用更优雅的等待方式
             for _ in range(POLL_INTERVAL * 10):
