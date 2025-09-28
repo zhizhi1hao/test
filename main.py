@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import serial.tools.list_ports
 def get_available_ports():
     """获取所有可用的串口列表"""
