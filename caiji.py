@@ -58,15 +58,15 @@ class TemperatureHumiditySensor:
         try:
             # 读取温度 (通常寄存器中存储的值需要除以10或100得到实际值)
             temperature_raw = self.instrument.read_register(40003, 1)
-            temperature = temperature_raw / 1000.0  # 根据传感器手册调整除数
+            temperature = temperature_raw / 100.0  # 根据传感器手册调整除数
 
             # 读取湿度
             humidity_raw = self.instrument.read_register(40008, 1)
-            humidity = humidity_raw / 1000.0  # 根据传感器手册调整除数
+            humidity = humidity_raw / 100.0  # 根据传感器手册调整除数
 
             # 读取气体
             humidity_gas = self.instrument.read_register(40003, 1)
-            gas = humidity_gas / 1000.0 # 根据传感器手册调整除数
+            gas = humidity_gas / 100.0 # 根据传感器手册调整除数
 
             # 读取火焰
             humidity_fire = self.instrument.read_register(2, 1)
@@ -93,7 +93,9 @@ class TemperatureHumiditySensor:
 
 def main():
     # 配置参数 - 请根据您的实际硬件调整这些值
-    SERIAL_PORT = '/dev/ttyS1'  # 串口设备路径
+    # SERIAL_PORT = '/dev/ttyS1'  # 串口设备路径
+    SERIAL_PORT = '/COM6'
+
     SLAVE_ADDRESS = 1  # 从站地址
     BAUD_RATE = 9600  # 波特率
     POLL_INTERVAL = 5  # 采集间隔(秒)
@@ -125,7 +127,8 @@ def main():
     try:
         while running:
             data = sensor.read_temperature_humidity()
-            print("你好啊 -------")
+            time_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+            print(time_str)
             if data:
                 print(f"温度: {data['temperature']:.1f}°C, 湿度: {data['humidity']:.1f}%, 气体: {data['gas']:.1f}%, 火焰: {data['fire']:.1f}")
             else:

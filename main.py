@@ -1,16 +1,19 @@
-# 这是一个示例 Python 脚本。
 
-# 按 Shift+F10 执行或将其替换为您的代码。
-# 按 双击 Shift 在所有地方搜索类、文件、工具窗口、操作和设置。
+import serial.tools.list_ports
+def get_available_ports():
+    """获取所有可用的串口列表"""
+    ports = serial.tools.list_ports.comports()
+    port_list = []
+
+    for port, desc, hwid in sorted(ports):
+        port_list.append({
+            'port': port,
+            'description': desc,
+            'hardware_id': hwid
+        })
+        print(f"端口: {port}, 描述: {desc}, 硬件ID: {hwid}")
+
+    return port_list
 
 
-def print_hi(name):
-    # 在下面的代码行中使用断点来调试脚本。
-    print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
-
-
-# 按装订区域中的绿色按钮以运行脚本。
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
+get_available_ports()
